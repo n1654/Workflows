@@ -66,3 +66,6 @@ sudo ipset add BLOCK-LIST 11.0.0.109 comment "host-11.0.0.109"
 # Add iptables rules
 sudo iptables -I INPUT -i v-eth1 -m set --match-set BLOCK-LIST src -j DROP
 sudo iptables -I FORWARD -i v-eth1 -m set --match-set BLOCK-LIST src -j DROP
+
+# Add static arp (there are several arp-proxys in this subnet)
+sudo ip netns exec vsrx arp -s 11.0.0.2 00:50:56:b2:1f:2e
