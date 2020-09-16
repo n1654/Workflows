@@ -10,3 +10,15 @@ sudo ip netns delete vsrx
 
 # Remove veth pair
 sudo ip link delete v-eth1
+
+# Remove iptables rules
+sudo iptables -D INPUT -i v-eth1 -m set --match-set BLOCK-LIST src -j DROP
+sudo iptables -D FORWARD -i v-eth1 -m set --match-set BLOCK-LIST src -j DROP
+
+# Remove ipset
+sudo ipset x BLOCK-LIST
+sudo ipset x SNMP-SERVER
+sudo ipset x SYSLOG-SERVER
+
+# Remove static arp
+sudo ip netns exec vsrx arp -d 11.0.0.2
